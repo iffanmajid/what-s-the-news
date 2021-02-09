@@ -1,5 +1,6 @@
 package com.whatsthenews.utils
 
+import com.whatsthenews.model.Article
 import com.whatsthenews.model.News
 
 object MockUtil {
@@ -16,4 +17,5 @@ object MockUtil {
             "https://sains.sindonews.com/read/329118/766/cacing-martil-yang-mengerikan-kanibal-dan-punya-racun-mirip-ikan-buntal-1612821774")
 
     fun mockNewsList() = listOf(mockNews(), mockNews2())
+
 }
