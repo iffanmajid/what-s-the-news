@@ -41,11 +41,13 @@ class NewsDaoTest : NewsLocalDatabase() {
   fun insertAndLoadNewsListTest() = runBlocking {
     val mockDataList = MockUtil.mockNewsList()
     newsDao.insertNewsList(mockDataList)
+    newsDao.insertNews(MockUtil.mockNews2())
 
     val loadFromDB = newsDao.getNewsList()
     assertThat(loadFromDB.toString(), `is`(mockDataList.toString()))
 
     val mockData = MockUtil.mockNews()
     assertThat(loadFromDB[0].toString(), `is`(mockData.toString()))
+    assertThat(loadFromDB[1].toString(), `is`(MockUtil.mockNews2().toString()))
   }
 }

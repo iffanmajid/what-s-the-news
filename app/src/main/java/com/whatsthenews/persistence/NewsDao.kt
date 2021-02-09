@@ -28,9 +28,12 @@ interface NewsDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insertNewsList(weatherList: List<News>)
 
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insertNews(news: News)
+
   @Query("SELECT * FROM News")
   suspend fun getNewsList(): List<News>
 
   @Query("DELETE FROM News")
-  suspend fun deleteAllNewss()
+  suspend fun deleteAllNews()
 }
