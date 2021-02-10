@@ -29,3 +29,8 @@ Also fetching data from the network and integrating persisted data in the databa
 ## Open API
 
 This project using the [NewsAPI](https://newsapi.org) for constructing RESTful API.<br>
+
+## What's Next
+- Add detail page on a news
+- Add favorite/save a news feature
+- Add share a news feature
