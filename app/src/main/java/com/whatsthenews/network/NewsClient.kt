@@ -18,7 +18,6 @@ package com.whatsthenews.network
 
 import com.skydoves.sandwich.ApiResponse
 import com.whatsthenews.model.NewsResponse
-import com.whatsthenews.model.WeatherResponse
 import javax.inject.Inject
 
 class NewsClient @Inject constructor(

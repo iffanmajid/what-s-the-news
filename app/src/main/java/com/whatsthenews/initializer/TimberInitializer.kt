@@ -13,16 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.whatsthenews.initializer
 
-package com.whatsthenews.persistence
+import android.content.Context
+import androidx.startup.Initializer
+import com.whatsthenews.BuildConfig
+import timber.log.Timber
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import com.whatsthenews.model.News
+class TimberInitializer : Initializer<Unit> {
 
-@Database(entities = [News::class], version = 1, exportSchema = true)
-abstract class NewsDatabase : RoomDatabase() {
+  override fun create(context: Context) {
+    if (BuildConfig.DEBUG) {
+      Timber.plant(Timber.DebugTree())
+      Timber.d("TimberInitializer is initialized.")
+    }
+  }
 
-  abstract fun newsDao(): NewsDao
-
+  override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }
