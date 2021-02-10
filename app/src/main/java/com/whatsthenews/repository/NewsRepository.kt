@@ -32,25 +32,35 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class NewsRepository @Inject constructor(
-  private val newsClient: NewsClient
+  private val newsClient: NewsClient,
+  private val newsDao: NewsDao,
 ) : Repository {
 
   @WorkerThread
   fun fetchNewsList(
+      country: String = "id",
     onSuccess: () -> Unit,
     onError: (String?) -> Unit
   ) = flow {
-      val response = newsClient.fetchNewsList()
-      response.suspendOnSuccess {
-        data.whatIfNotNull { response ->
-            val news = map(NewsResponseMapper)
-            emit(news)
-            onSuccess()
-        }
+      var newsList = newsDao.getNewsList()
+      if (newsList.isEmpty()) {
+          val response = newsClient.fetchNewsList(country)
+          response.suspendOnSuccess {
+              data.whatIfNotNull { response ->
+                  newsList = map(NewsResponseMapper)
+                  newsDao.deleteAllNews()
+                  newsDao.insertNewsList(newsList)
+                  emit(newsDao.getNewsList())
+                  onSuccess()
+              }
+          }
+              .onError {
+                  map(ErrorResponseMapper) { onError("[Code: $code]: $message") }
+              }
+              .onException { onError(message) }
+      } else {
+          emit(newsDao.getNewsList())
+          onSuccess()
       }
-        .onError {
-          map(ErrorResponseMapper) { onError("[Code: $code]: $message") }
-        }
-        .onException { onError(message) }
   }.flowOn(Dispatchers.IO)
 }
