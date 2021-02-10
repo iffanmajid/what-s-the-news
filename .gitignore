@@ -57,3 +57,6 @@ freeline_project_description.json
 
 # Local db
 app/schemas/com.whatsthenews.persistence.NewsDatabase
+
+# DS_Store file
+*.DS_Store
