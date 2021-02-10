@@ -11,8 +11,10 @@ import com.whatsthenews.MainCoroutinesRule
 import com.whatsthenews.model.News
 import com.whatsthenews.network.NewsClient
 import com.whatsthenews.network.NewsService
+import com.whatsthenews.persistence.NewsDao
 import com.whatsthenews.repository.NewsRepository
 import com.whatsthenews.ui.main.NewsViewModel
+import com.whatsthenews.utils.MockUtil
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -27,6 +29,7 @@ class NewsViewModelTest {
     private lateinit var newsRepository: NewsRepository
     private val newsService: NewsService = mock()
     private val newsClient: NewsClient = NewsClient(newsService)
+    private val newsDao: NewsDao = mock()
 
     @ExperimentalCoroutinesApi
     @get:Rule
@@ -38,7 +41,7 @@ class NewsViewModelTest {
     @ExperimentalCoroutinesApi
     @Before
     fun setup() {
-        newsRepository = NewsRepository(newsClient)
+        newsRepository = NewsRepository(newsClient, newsDao)
         viewModel = NewsViewModel(newsRepository)
     }
 
@@ -52,10 +55,11 @@ class NewsViewModelTest {
                 ).asLiveData()
         fetchedData.observeForever(observer)
 
-        viewModel.fetchHeadlines()
+        viewModel.fetchHeadlines("id")
         delay(500L)
 
-        verify(newsRepository, atLeastOnce()).fetchNewsList(mock(), mock())
+        verify(newsDao, atLeastOnce()).getNewsList()
+        verify(observer).onChanged(MockUtil.mockNewsList())
         fetchedData.removeObserver(observer)
     }
 }

@@ -24,6 +24,6 @@ class NewsClient @Inject constructor(
   private val newsService: NewsService
 ) {
 
-  suspend fun fetchNewsList(): ApiResponse<NewsResponse> =
-    newsService.fetchTopHeadlines()
+  suspend fun fetchNewsList(country: String = "id"): ApiResponse<NewsResponse> =
+    newsService.fetchTopHeadlines(country = country)
 }
