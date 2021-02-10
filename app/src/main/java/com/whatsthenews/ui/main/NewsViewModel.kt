@@ -18,22 +18,18 @@ class NewsViewModel @Inject constructor(
         private val newsRepository: NewsRepository
 ) : LiveCoroutinesViewModel() {
 
-    val newsListData: LiveData<List<News>>
+    val newsListLiveData: LiveData<List<News>>
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     private val countryHeadlines: MutableStateFlow<String> = MutableStateFlow("id")
     private val _toastLiveData: MutableLiveData<String> = MutableLiveData()
-
+    val toastLiveData: LiveData<String> get() = _toastLiveData
 
     init {
-        newsListData = countryHeadlines.asLiveData().switchMap {
+        newsListLiveData = countryHeadlines.asLiveData().switchMap {
             isLoading.set(true)
             newsRepository.fetchNewsList(
-                onSuccess = {
-                    isLoading.set(false)
-                },
-                onError = {
-                    _toastLiveData.postValue(it)
-                }
+                onSuccess = { isLoading.set(false) },
+                onError = { _toastLiveData.postValue(it) }
             ).asLiveDataOnViewModelScope()
         }
     }

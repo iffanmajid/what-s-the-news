@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">what\'s the news</string>
+    <string name="celcius_format">%1$s\u2103</string>
+    <string name="min_and_max_degree_celcius">%1$s\u2103/%2$s\u2103</string>
+    <string name="permission_rationale">
+        Location permission is needed for core functionality
+    </string>
+    <string name="permission_denied_explanation">
+        Permission was denied, We cannot find your current city location.
+    </string>
+
+</resources>
